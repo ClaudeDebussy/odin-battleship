@@ -1,4 +1,4 @@
-import pluginJest from 'eslint-plugin-jest';
+import pluginJest from 'eslint-plugin-jest'
 
 export default [
   // ... other configurations
@@ -18,4 +18,4 @@ export default [
       // ... your specific Jest-related rules
     },
   },
-];
+]
