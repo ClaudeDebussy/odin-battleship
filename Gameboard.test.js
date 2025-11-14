@@ -15,4 +15,8 @@ describe('managing gameboard', () => {
     expect(foundItem.type).toBe(expected)
   })
 
+  it('should detect if ship present on square', () => {
+    expect(gameboard.hasShip(5,5)).toBeTruthy()
+  })
+
 })

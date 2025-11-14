@@ -8,6 +8,7 @@ describe('managing Ship objects', () => {
     expect(ship).toHaveProperty('length', 4)
     expect(ship).toHaveProperty('timesHit', 0)
     expect(ship).toHaveProperty('sunk', false)
+    expect(ship).toHaveProperty('orientation', 'north')
   })
 
   it('should increment hit when hit', () => {
