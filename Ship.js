@@ -1,9 +1,13 @@
 export class Ship {
-  constructor(type, orientation, position) {
+  constructor({
+    type = 'battleship',
+    orientation = 'north',
+    position = [5,5],
+  } = {}) {
     this.type = type
-    this.length = this.#SHIP_LENGTH(type)
-    this.orientation = orientation || 'north'
-    this.position = position || [5,5]
+    this.length = this.#SHIP_LENGTH(this.type)
+    this.orientation = orientation
+    this.position = position
     this.timesHit = 0
     this.sunk = false
   }

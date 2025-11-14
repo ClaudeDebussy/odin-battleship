@@ -2,7 +2,7 @@ import { Ship } from "./Ship"
 
 describe('managing Ship objects', () => {
 
-  const ship = new Ship("battleship")
+  const ship = new Ship()
 
   it('should properly create a Ship object', () => {
     expect(ship).toHaveProperty('length', 4)
