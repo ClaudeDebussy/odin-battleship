@@ -3,7 +3,7 @@ import { Ship } from './Ship'
 
 const gameboard = new Gameboard()
 const shipType = 'battleship'
-gameboard.placeShip(shipType, 5,5)
+gameboard.placeShip()
 
 describe('managing gameboard', () => {
   const data = [
@@ -16,7 +16,11 @@ describe('managing gameboard', () => {
   })
 
   it('should detect if ship present on square', () => {
-    expect(gameboard.hasShip(5,5)).toBeTruthy()
+    expect(gameboard.cellHasShip([5,5])).toBeTruthy()
+    expect(gameboard.cellHasShip([5,4])).toBeTruthy()
+    expect(gameboard.cellHasShip([5,3])).toBeTruthy()
+    expect(gameboard.cellHasShip([5,2])).toBeTruthy()
+    expect(gameboard.cellHasShip([5,1])).toBeFalsy()
   })
 
 })
