@@ -40,5 +40,24 @@ describe('managing gameboard', () => {
   it('should properly reset the board', () => {
     gameboard.reset()
     expect(gameboard.ships.length).toBe(0)
+
+    // TODO implement reset of hits array
+  })
+
+  it('should record successful hits', () => {
+    expect(() => gameboard.receiveAttack([11, 0])).toThrow()
+    expect(() => gameboard.receiveAttack([0, 11])).toThrow()
+    expect(() => gameboard.receiveAttack([-1, 0])).toThrow()
+    expect(() => gameboard.receiveAttack([0, -1])).toThrow()
+
+    gameboard.placeNewShip('submarine', 'north', [5, 5])
+    gameboard.receiveAttack([5, 5])
+    expect(gameboard.hits[0][0]).toBe(5)
+    expect(gameboard.hits[0][1]).toBe(5)
+    gameboard.receiveAttack([5, 3])
+    expect(gameboard.hits[1][0]).toBe(5)
+    expect(gameboard.hits[1][1]).toBe(3)
+
+    expect(gameboard.cellHasAlreadyBeenHit([5, 3])).toBeTruthy()
   })
 })

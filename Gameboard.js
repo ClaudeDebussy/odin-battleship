@@ -7,20 +7,21 @@ export class Gameboard {
   }
 
   ships = []
+  hits = []
 
   placeNewShip(type, orientation, position) {
     // Check if ship already there
     const ship = new Ship({ type, orientation, position }) // TODO
 
     // Check if desired ship position is inside gameboard
-    if (!this.#positionIsInsideGameboard(ship)) {
+    if (!this.#shipPositionIsInsideGameboard(ship)) {
       throw new Error('Invalid gameboard position.')
     }
 
     this.ships.push(ship)
   }
 
-  #positionIsInsideGameboard(ship) {
+  #shipPositionIsInsideGameboard(ship) {
     if (!(ship instanceof Ship)) {
       throw new Error('Parameter must be instance of Ship object.')
     }
@@ -102,5 +103,38 @@ export class Gameboard {
 
   reset() {
     this.ships = []
+  }
+
+  receiveAttack(cell) {
+    if (!this.#positionIsInsideGameboard(cell))
+      throw new Error('Invalid gameboard position.')
+
+    //TODO check if position already has been hit
+    if (this.cellHasAlreadyBeenHit(cell)) return
+
+    this.hits.push(cell)
+
+    const hitWasSuccessful = this.cellHasShip(cell)
+    if (hitWasSuccessful) this.resolveSuccessfulHit(cell)
+  }
+
+  cellHasAlreadyBeenHit(cell) {
+    for (let i = 0; i < this.hits.length; i++) {
+      if (this.#arraysAreEqual(cell, this.hits[i])) return true
+    }
+  }
+
+  resolveSuccessfulHit(cell) {}
+
+  #positionIsInsideGameboard(cell) {
+    if (
+      cell[0] > this.length ||
+      cell[1] > this.height ||
+      cell[0] < 0 ||
+      cell[1] < 0
+    ) {
+      return false
+    }
+    return true
   }
 }
