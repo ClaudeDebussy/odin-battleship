@@ -21,7 +21,6 @@ describe('managing Ship objects', () => {
     expect(ship.sunk).toBe(false) // ship starts out alive
     ship.hit()
     ship.hit()
-    console.log(ship.timesHit)
     expect(ship.sunk).toBe(true)
   })
 })

@@ -36,4 +36,9 @@ describe('managing gameboard', () => {
     expect(gameboard.cellHasShip([5, 2])).toBeTruthy()
     expect(gameboard.cellHasShip([5, 1])).toBeFalsy()
   })
+
+  it('should properly reset the board', () => {
+    gameboard.reset()
+    expect(gameboard.ships.length).toBe(0)
+  })
 })

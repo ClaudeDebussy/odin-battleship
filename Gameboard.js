@@ -99,4 +99,8 @@ export class Gameboard {
     }
     return true
   }
+
+  reset() {
+    this.ships = []
+  }
 }
