@@ -1,7 +1,6 @@
-import { Ship } from "./Ship"
+import { Ship } from './Ship'
 
 describe('managing Ship objects', () => {
-
   const ship = new Ship()
 
   it('should properly create a Ship object', () => {
@@ -25,5 +24,4 @@ describe('managing Ship objects', () => {
     console.log(ship.timesHit)
     expect(ship.sunk).toBe(true)
   })
-
 })

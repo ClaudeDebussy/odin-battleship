@@ -2,7 +2,7 @@ export class Ship {
   constructor({
     type = 'battleship',
     orientation = 'north',
-    position = [5,5],
+    position = [5, 5],
   } = {}) {
     this.type = type
     this.length = this.#SHIP_LENGTH(this.type)
@@ -14,15 +14,15 @@ export class Ship {
 
   #SHIP_LENGTH(type) {
     switch (type) {
-      case "carrier":
+      case 'carrier':
         return 5
-      case "battleship":
+      case 'battleship':
         return 4
-      case "cruiser": 
+      case 'cruiser':
         return 3
-      case "submarine":
+      case 'submarine':
         return 3
-      case "destroyer":
+      case 'destroyer':
         return 2
     }
   }
@@ -34,8 +34,8 @@ export class Ship {
   }
 
   isSunk() {
-    if (this.timesHit === this.length) {this.sunk = true} 
+    if (this.timesHit === this.length) {
+      this.sunk = true
+    }
   }
-
-
 }
