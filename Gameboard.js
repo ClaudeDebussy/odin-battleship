@@ -2,24 +2,43 @@ import { Ship } from './Ship.js'
 
 export class Gameboard {
   constructor(size = [10,10]) {
-    this.size = size
+    this.length = size[0]
+    this.height = size[1]
   }
 
   ships = []
 
-  placeShip(type, orientation, position) {
-    // Check if ship is already there
-
-    // If ship not there, place it
-    const ship = new Ship({type, orientation, position}) // hard-code battleship
-    this.ships.push(ship)
+  placeNewShip(type, orientation, position) {
+    // Check if ship already there
+    const ship = new Ship({type, orientation, position}) // TODO
     
+    // Check if desired ship position is inside gameboard
+    if (!this.#positionIsInsideGameboard(ship)) {throw new Error("Invalid gameboard position.");}
+
+    this.ships.push(ship)
   }
 
-  cellHasShip(coord) {
+  #positionIsInsideGameboard(ship) {
+    if (!(ship instanceof Ship)) {throw new Error("Parameter must be instance of Ship object.");}
+    const shipCells = this.#getShipCells(ship.position, ship.orientation, ship.length)
+    for (let i = 0; i < shipCells.length; i++) {
+      if (
+        shipCells[i][0] > this.length || 
+        shipCells[i][1] > this.height || 
+        shipCells[i][0] < 0 ||
+        shipCells[i][1] < 0
+      ) 
+      {
+        return false
+      }
+    }
+    return true
+  }
+
+  cellHasShip(cell) {
     let hasShip = false;
     this.ships.forEach(ship => {
-      const cellToCheck = [coord[0],coord[1]]
+      const cellToCheck = [cell[0],cell[1]]
       const position = ship.position
       const orientation = ship.orientation
       const length = ship.length
@@ -45,7 +64,7 @@ export class Gameboard {
         break;
       case 'east':
         for (let i = 0; i < length; i++) {
-          cells.push([x + i, y])
+          cells.push([x - i, y])
         }
         break;
       case 'south':
@@ -55,7 +74,7 @@ export class Gameboard {
         break;
       case 'west':
         for (let i = 0; i < length; i++) {
-          cells.push([x - i, y])
+          cells.push([x + i, y])
         }
         break;
     }

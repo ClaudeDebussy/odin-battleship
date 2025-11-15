@@ -3,9 +3,16 @@ import { Ship } from './Ship'
 
 const gameboard = new Gameboard()
 const shipType = 'battleship'
-gameboard.placeShip()
+gameboard.placeNewShip()
 
 describe('managing gameboard', () => {
+  it('should throw error if not valid gameboard position', () => {
+    expect(() => gameboard.placeNewShip('submarine','north',[5,11])).toThrow()
+    expect(() => gameboard.placeNewShip('submarine','north',[11,5])).toThrow()
+    expect(() => gameboard.placeNewShip('submarine','west',[10,5])).toThrow()
+    expect(() => gameboard.placeNewShip('submarine','east',[0,5])).toThrow()
+  })
+  
   const data = [
     { array: gameboard.ships, itemToFind: shipType, expected: shipType}
   ]
