@@ -8,6 +8,8 @@ export class Gameboard {
 
   ships = []
   hits = []
+  shipsSunk = []
+  gameOver = false
 
   placeNewShip(type, orientation, position) {
     // Check if ship already there
@@ -126,6 +128,10 @@ export class Gameboard {
   resolveSuccessfulHit(cell) {
     const shipAtThatLocation = this.getShipAtLocation(cell)
     shipAtThatLocation.hit()
+    if (this.#shipHasSunk(shipAtThatLocation)) {
+      this.shipsSunk.push(shipAtThatLocation)
+    }
+    if (this.#allShipsAreSunk()) this.gameOver = true
   }
 
   getShipAtLocation(cell) {
@@ -156,5 +162,13 @@ export class Gameboard {
       return false
     }
     return true
+  }
+
+  #shipHasSunk(ship) {
+    if (ship.sunk) return true
+  }
+
+  #allShipsAreSunk() {
+    if (this.shipsSunk.length === this.ships.length) return true
   }
 }
