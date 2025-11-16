@@ -29,13 +29,10 @@ export class Ship {
 
   hit() {
     this.timesHit++
-    // check if is sunk
-    this.isSunk()
+    if (this.timesHit === this.length) this.isSunk()
   }
 
   isSunk() {
-    if (this.timesHit === this.length) {
-      this.sunk = true
-    }
+    this.sunk = true
   }
 }

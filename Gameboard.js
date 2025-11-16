@@ -109,7 +109,6 @@ export class Gameboard {
     if (!this.#positionIsInsideGameboard(cell))
       throw new Error('Invalid gameboard position.')
 
-    //TODO check if position already has been hit
     if (this.cellHasAlreadyBeenHit(cell)) return
 
     this.hits.push(cell)
@@ -124,7 +123,28 @@ export class Gameboard {
     }
   }
 
-  resolveSuccessfulHit(cell) {}
+  resolveSuccessfulHit(cell) {
+    const shipAtThatLocation = this.getShipAtLocation(cell)
+    shipAtThatLocation.hit()
+  }
+
+  getShipAtLocation(cell) {
+    for (let i = 0; i < this.ships.length; i++) {
+      const ship = this.ships[i]
+      const shipCells = this.#getShipCells(
+        ship.position,
+        ship.orientation,
+        ship.length,
+      )
+      if (this.#shipCellsAreTargetCell(shipCells, cell)) return ship
+    }
+  }
+
+  #shipCellsAreTargetCell(shipCells, target) {
+    for (let i = 0; i < shipCells.length; i++) {
+      if (this.#arraysAreEqual(shipCells[i], target)) return true
+    }
+  }
 
   #positionIsInsideGameboard(cell) {
     if (
