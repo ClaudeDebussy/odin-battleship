@@ -65,5 +65,9 @@ describe('managing gameboard', () => {
 
     gameboard.receiveAttack([5, 4])
     expect(gameboard.getShipAtLocation([5, 4]).sunk).toBeTruthy()
+
+    gameboard.receiveAttack([1, 2]) //test attack that hits no ship
+    expect(gameboard.hits[3][0]).toBe(1)
+    expect(gameboard.hits[3][1]).toBe(2)
   })
 })
