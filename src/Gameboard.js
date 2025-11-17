@@ -34,8 +34,8 @@ export class Gameboard {
     )
     for (let i = 0; i < shipCells.length; i++) {
       if (
-        shipCells[i][0] > this.length ||
-        shipCells[i][1] > this.height ||
+        shipCells[i][0] > this.length - 1 ||
+        shipCells[i][1] > this.height - 1 ||
         shipCells[i][0] < 0 ||
         shipCells[i][1] < 0
       ) {
@@ -157,8 +157,8 @@ export class Gameboard {
 
   #positionIsInsideGameboard(cell) {
     if (
-      cell[0] > this.length ||
-      cell[1] > this.height ||
+      cell[0] > this.length - 1 ||
+      cell[1] > this.height - 1 ||
       cell[0] < 0 ||
       cell[1] < 0
     ) {
@@ -173,5 +173,20 @@ export class Gameboard {
 
   #allShipsAreSunk() {
     if (this.shipsSunk.length === this.ships.length) return true
+  }
+
+  // WIP BELOW
+
+  getGameboardAsList() {
+    const list = []
+    const width = this.width
+    const height = this.height
+
+    for (let y = height; y > 0; y--) {
+      for (let x = 0; x < width; x++) {
+        const cell = [x, y]
+        if (this.cellHasShip(cell)) list.push(cell)
+      }
+    }
   }
 }

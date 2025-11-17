@@ -8,12 +8,12 @@ gameboard.placeNewShip()
 describe('managing gameboard', () => {
   it('should throw error if not valid gameboard position', () => {
     expect(() =>
-      gameboard.placeNewShip('submarine', 'north', [5, 11]),
+      gameboard.placeNewShip('submarine', 'north', [5, 10]),
     ).toThrow()
     expect(() =>
-      gameboard.placeNewShip('submarine', 'north', [11, 5]),
+      gameboard.placeNewShip('submarine', 'north', [10, 5]),
     ).toThrow()
-    expect(() => gameboard.placeNewShip('submarine', 'west', [10, 5])).toThrow()
+    expect(() => gameboard.placeNewShip('submarine', 'west', [9, 5])).toThrow()
     expect(() => gameboard.placeNewShip('submarine', 'east', [0, 5])).toThrow()
   })
 
