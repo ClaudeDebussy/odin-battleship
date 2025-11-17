@@ -76,4 +76,10 @@ describe('managing gameboard', () => {
     expect(gameboard.hits[3][0]).toBe(1)
     expect(gameboard.hits[3][1]).toBe(2)
   })
+
+  it('should return gameboard as a list', () => {
+    gameboard.reset()
+    const list = gameboard.getGameboardAsList()
+    expect(list.length).toBe(100)
+  })
 })

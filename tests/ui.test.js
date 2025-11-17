@@ -1,5 +1,5 @@
 import { Player } from '../src/Player'
-import { rename } from '../src/ui'
+import { rename, newGame } from '../src/ui'
 
 describe('managing UI', () => {
   it('should rename players', () => {
@@ -18,4 +18,6 @@ describe('managing UI', () => {
     expect(() => rename(player, 23)).toThrow()
     expect(() => rename(player, '123456789012345678901')).toThrow()
   })
+
+  it.todo('should create a new game')
 })

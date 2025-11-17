@@ -1,8 +1,16 @@
-import { Player } from './Player'
-import { Gameboard } from './Gameboard'
+import { Player } from './Player.js'
+import { Gameboard } from './Gameboard.js'
 
-function newGame() {
-  Gameboard.reset()
+export function newGame(players) {
+  if (players) {
+    const [player1, players2] = players
+  } else {
+    const player1 = new Player('human', 'Player 1')
+    const player2 = new Player('computer', 'Computer')
+  }
+  player1.gameboard.reset()
+  player2.gameboard.reset()
+  renderBoard(player1, player2)
 }
 
 export function rename(player, newName) {
@@ -15,4 +23,11 @@ export function rename(player, newName) {
     throw new Error('Name cannot be longer than 20 chars.')
   }
   player.name = newName
+}
+
+export function renderBoard(player1, player2) {
+  const player1Board = player1.gameboard
+  const player2Board = player2.gameboard
+
+  const board = document.createElement('div')
 }

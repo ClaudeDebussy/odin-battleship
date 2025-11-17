@@ -2,7 +2,7 @@ import { Ship } from './Ship.js'
 
 export class Gameboard {
   constructor(size = [10, 10]) {
-    this.length = size[0]
+    this.width = size[0]
     this.height = size[1]
   }
 
@@ -34,7 +34,7 @@ export class Gameboard {
     )
     for (let i = 0; i < shipCells.length; i++) {
       if (
-        shipCells[i][0] > this.length - 1 ||
+        shipCells[i][0] > this.width - 1 ||
         shipCells[i][1] > this.height - 1 ||
         shipCells[i][0] < 0 ||
         shipCells[i][1] < 0
@@ -157,7 +157,7 @@ export class Gameboard {
 
   #positionIsInsideGameboard(cell) {
     if (
-      cell[0] > this.length - 1 ||
+      cell[0] > this.width - 1 ||
       cell[1] > this.height - 1 ||
       cell[0] < 0 ||
       cell[1] < 0
@@ -181,12 +181,22 @@ export class Gameboard {
     const list = []
     const width = this.width
     const height = this.height
+    let x
+    let y
 
-    for (let y = height; y > 0; y--) {
-      for (let x = 0; x < width; x++) {
+    for (y = height; y > 0; y--) {
+      for (x = 0; x < width; x++) {
         const cell = [x, y]
-        if (this.cellHasShip(cell)) list.push(cell)
+        if (this.cellHasShip(cell)) {
+          list.push(1)
+        } else {
+          list.push(0)
+        }
+      }
+      if (x === width - 1) {
+        x = 0
       }
     }
+    return list
   }
 }
