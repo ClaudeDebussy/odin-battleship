@@ -17,4 +17,11 @@ describe('testing players', () => {
     expect(computerPlayer.type).toBe('computer')
     expect(computerPlayer.gameboard).toBeInstanceOf(Gameboard)
   })
+
+  it('should allow change of name', () => {
+    const humanPlayer = new Player('human')
+    expect(humanPlayer.name).toBe('Player')
+    humanPlayer.name = 'Joe'
+    expect(humanPlayer.name).toBe('Joe')
+  })
 })
