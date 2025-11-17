@@ -105,6 +105,9 @@ export class Gameboard {
 
   reset() {
     this.ships = []
+    this.hits = []
+    this.shipsSunk = []
+    this.gameOver = false
   }
 
   receiveAttack(cell) {

@@ -40,6 +40,9 @@ describe('managing gameboard', () => {
   it('should properly reset the board', () => {
     gameboard.reset()
     expect(gameboard.ships.length).toBe(0)
+    expect(gameboard.hits.length).toBe(0)
+    expect(gameboard.shipsSunk.length).toBe(0)
+    expect(gameboard.gameOver).toBeFalsy()
 
     // TODO implement reset of hits array
   })
