@@ -79,7 +79,10 @@ describe('managing gameboard', () => {
 
   it('should return gameboard as a list', () => {
     gameboard.reset()
-    const list = gameboard.getGameboardAsList()
+    let list = gameboard.getGameboardAsList()
     expect(list.length).toBe(100)
+    gameboard.placeNewShip('submarine', 'west', [0, 9])
+    list = gameboard.getGameboardAsList()
+    expect(list[0]).toBe(1)
   })
 })

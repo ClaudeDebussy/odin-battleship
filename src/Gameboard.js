@@ -175,8 +175,6 @@ export class Gameboard {
     if (this.shipsSunk.length === this.ships.length) return true
   }
 
-  // WIP BELOW
-
   getGameboardAsList() {
     const list = []
     const width = this.width
@@ -186,7 +184,7 @@ export class Gameboard {
 
     for (y = height; y > 0; y--) {
       for (x = 0; x < width; x++) {
-        const cell = [x, y]
+        const cell = [x, y - 1]
         if (this.cellHasShip(cell)) {
           list.push(1)
         } else {
