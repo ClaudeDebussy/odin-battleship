@@ -80,13 +80,23 @@ h6 {
 }
 
 body {
-  height: 100%;
+  width: 100%;
+  min-height: 100vh;
 }
 
-#player1BoardContainer {
+.container {
+  width: 100%;
+  margin: 1em 0;
+  padding: 0 1em;
+
+  display: flex;
+  gap: 1em;
+}
+
+.boardContainer {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
-  width: 100%;
+  flex: 1 1 0;
 }
 
 .cell {
