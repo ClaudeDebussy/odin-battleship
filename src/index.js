@@ -5,7 +5,8 @@ import { newGame, rename } from './ui.js'
 
 // newGame(players)
 
-const gameboard = new Gameboard()
-gameboard.placeNewShip('submarine', 'west', [0, 9])
-console.log(gameboard.getGameboardAsList())
-console.log(gameboard.getGameboardAsList()[0])
+// const gameboard = new Gameboard()
+// gameboard.placeNewShip('submarine', 'west', [0, 9])
+// console.log(gameboard.getGameboardAsList())
+// console.log(gameboard.getGameboardAsList()[0])
+newGame()

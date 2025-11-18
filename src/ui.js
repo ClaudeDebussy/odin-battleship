@@ -10,7 +10,8 @@ export function newGame(players) {
   }
   player1.gameboard.reset()
   player2.gameboard.reset()
-  renderBoard(player1, player2)
+  console.log('rendering')
+  renderNewBoard(player1, player2)
 }
 
 export function rename(player, newName) {
@@ -25,9 +26,18 @@ export function rename(player, newName) {
   player.name = newName
 }
 
-export function renderBoard(player1, player2) {
+export function renderNewBoard(player1, player2) {
   const player1Board = player1.gameboard
   const player2Board = player2.gameboard
+  const totalCells = player1Board.width * player1Board.height
 
-  const board = document.createElement('div')
+  const board = document.createDocumentFragment()
+  for (let i = 0; i < totalCells; i++) {
+    const cell = document.createElement('button')
+    cell.classList.add('cell')
+    board.append(cell)
+  }
+  const player1BoardContainer = document.getElementById('player1BoardContainer')
+  player1BoardContainer.classList.add('test')
+  player1BoardContainer.append(board)
 }
