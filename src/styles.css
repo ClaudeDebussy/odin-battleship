@@ -77,6 +77,7 @@ h6 {
   --brown: #55251d;
   --dark-blue: #183446;
   --light-blue: #046e8f;
+  --lighter-blue: #06a9db;
 }
 
 html,
@@ -112,10 +113,17 @@ body {
 
 .cell {
   background-color: var(--light-blue);
-  color: blue;
   border: 1px solid var(--dark-blue);
   padding: 0em;
   cursor: pointer;
   width: 100%;
   aspect-ratio: 1 / 1;
+}
+
+.cell:hover {
+  background-color: var(--lighter-blue);
+}
+
+.cell:active {
+  background-color: var(--dark-blue);
 }
