@@ -79,9 +79,17 @@ h6 {
   --light-blue: #046e8f;
 }
 
+html,
 body {
-  width: 100%;
-  min-height: 100vh;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--white);
 }
 
 .container {
@@ -91,12 +99,15 @@ body {
 
   display: flex;
   gap: 1em;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
 .boardContainer {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
-  flex: 1 1 0;
+  width: min(40vh, 40vh);
 }
 
 .cell {
