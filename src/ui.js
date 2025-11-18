@@ -43,6 +43,20 @@ function renderNewBoard(player1, player2) {
   const player1BoardContainer = document.getElementById('player1BoardContainer')
   player1BoardContainer.classList.add('test')
   player1BoardContainer.append(board)
+  assignCoordsAsClassToCells(
+    player1BoardContainer,
+    player1Board.width,
+    player1Board.height,
+  )
 }
 
-function assignCoordsToCells(board, width, height) {}
+function assignCoordsAsClassToCells(board, width, height) {
+  let i = 0
+  for (let y = height - 1; y >= 0; y--) {
+    for (let x = 0; x < width; x++) {
+      const cell = board.children[i]
+      cell.classList.add(`[${x},${y}]`)
+      i++
+    }
+  }
+}

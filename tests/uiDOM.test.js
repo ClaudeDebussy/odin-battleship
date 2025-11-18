@@ -15,5 +15,7 @@ describe('writing to the DOM', () => {
     expect(
       document.getElementById('player1BoardContainer').childElementCount,
     ).toBe(100)
+    let firstCell = document.getElementById('player1BoardContainer').firstChild
+    expect(firstCell.className).toBe('cell [0,9]')
   })
 })
