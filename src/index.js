@@ -10,6 +10,6 @@ import './styles.css'
 // gameboard.placeNewShip('submarine', 'west', [0, 9])
 // console.log(gameboard.getGameboardAsList())
 // console.log(gameboard.getGameboardAsList()[0])
-// newGame()
+newGame()
 
 console.log('webpack test')

@@ -1,16 +1,19 @@
 import { Player } from './Player.js'
 import { Gameboard } from './Gameboard.js'
 
-export function newGame(players) {
+export function newGame(players = undefined) {
+  let player1
+  let player2
+
   if (players) {
-    const [player1, players2] = players
+    player1 = players[0]
+    player2 = players[1]
   } else {
-    const player1 = new Player('human', 'Player 1')
-    const player2 = new Player('computer', 'Computer')
+    player1 = new Player('human', 'Player 1')
+    player2 = new Player('computer', 'Computer')
   }
   player1.gameboard.reset()
   player2.gameboard.reset()
-  console.log('rendering')
   renderNewBoard(player1, player2)
 }
 
@@ -26,7 +29,7 @@ export function rename(player, newName) {
   player.name = newName
 }
 
-export function renderNewBoard(player1, player2) {
+function renderNewBoard(player1, player2) {
   const player1Board = player1.gameboard
   const player2Board = player2.gameboard
   const totalCells = player1Board.width * player1Board.height
@@ -41,3 +44,5 @@ export function renderNewBoard(player1, player2) {
   player1BoardContainer.classList.add('test')
   player1BoardContainer.append(board)
 }
+
+function assignCoordsToCells(board, width, height) {}
