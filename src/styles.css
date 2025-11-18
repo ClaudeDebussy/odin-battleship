@@ -66,3 +66,35 @@ h6 {
 #__next {
   isolation: isolate;
 }
+
+/*
+  START
+*/
+
+:root {
+  --green: #3e885b;
+  --white: #ffeecf;
+  --brown: #55251d;
+  --dark-blue: #183446;
+  --light-blue: #046e8f;
+}
+
+body {
+  height: 100%;
+}
+
+#player1BoardContainer {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  width: 100%;
+}
+
+.cell {
+  background-color: var(--light-blue);
+  color: blue;
+  border: 1px solid var(--dark-blue);
+  padding: 0em;
+  cursor: pointer;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
