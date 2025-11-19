@@ -81,20 +81,17 @@ export class Gameboard {
   }
 
   cellHasShip(cell) {
-    let hasShip = false
-    this.ships.forEach((ship) => {
-      const cellToCheck = [cell[0], cell[1]]
-      const position = ship.position
-      const orientation = ship.orientation
-      const length = ship.length
-
-      const cellsWithShips = this.#getShipCells(position, orientation, length)
-
-      hasShip = cellsWithShips.some((arr) =>
-        this.#arraysAreEqual(arr, cellToCheck),
+    // Check if ANY ship has a cell matching the input cell
+    return this.ships.some((ship) => {
+      const cellsWithShips = this.#getShipCells(
+        ship.position,
+        ship.orientation,
+        ship.length,
+      )
+      return cellsWithShips.some((shipCell) =>
+        this.#arraysAreEqual(shipCell, cell),
       )
     })
-    return hasShip
   }
 
   #getShipCells(position, orientation, length) {
