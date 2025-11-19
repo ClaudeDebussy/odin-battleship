@@ -45,7 +45,6 @@ function assembleBoard(width, height) {
   for (let i = 0; i < players.length; i++) {
     const boardFragment = cellCreator(totalCells)
     const targetBoard = boards[i]
-    console.log(targetBoard)
     targetBoard.classList.add(`${players[i]}`)
     targetBoard.append(boardFragment)
 
@@ -77,8 +76,7 @@ function assignCoordsAsClassToCells(board, width, height) {
 function displayPlayerNames(player1, player2) {
   const players = [player1, player2]
   const container = document.querySelector('.container')
-  const playerContainers = container.children
-  console.log(playerContainers)
+  const playerContainers = container.querySelectorAll('.playerContainer')
   for (let i = 0; i < playerContainers.length; i++) {
     let h2 = document.createElement('h2')
     h2.textContent = players[i].name

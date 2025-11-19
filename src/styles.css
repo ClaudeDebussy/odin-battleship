@@ -74,10 +74,12 @@ h6 {
 :root {
   --green: #3e885b;
   --white: #ffeecf;
-  --brown: #55251d;
+  --violet: #5f1a37;
   --dark-blue: #183446;
   --light-blue: #046e8f;
   --lighter-blue: #06a9db;
+
+  --navBarHeight: 4em;
 }
 
 html,
@@ -139,4 +141,50 @@ body {
 
 .cell:active {
   background-color: var(--dark-blue);
+}
+
+.bottomNavBar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: var(--navBarHeight);
+  padding: 0.5em;
+  background-color: var(--violet);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.turnIndicator {
+  position: fixed;
+  bottom: calc(var(--navBarHeight) / 4);
+  padding: 0 3em;
+  color: var(--white);
+}
+
+.turnIndicator.left {
+  left: 0;
+}
+
+.turnIndicator.right {
+  right: 0;
+}
+
+.bottomNavBar .newGame {
+  background-color: var(--white);
+  color: var(--violet);
+  font-weight: 600;
+  padding: 0.25em 2em;
+  border: 1px solid var(--dark-blue);
+  cursor: pointer;
+}
+
+.bottomNavBar .newGame:hover {
+  background-color: var(--dark-blue);
+  color: var(--white);
+}
+
+.bottomNavBar .newGame:active {
+  background-color: var(--lighter-blue);
+  color: var(--white);
 }
