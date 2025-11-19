@@ -68,7 +68,7 @@ h6 {
 }
 
 /*
-  START
+  START-----------------------------------------
 */
 
 :root {
@@ -84,6 +84,7 @@ html,
 body {
   height: 100%;
   margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
@@ -91,24 +92,36 @@ body {
   justify-content: center;
   align-items: center;
   background-color: var(--white);
-}
-
-.container {
-  width: 100%;
-  margin: 1em 0;
-  padding: 0 1em;
-
-  display: flex;
   gap: 1em;
-  justify-content: center;
-  align-items: center;
+  flex-wrap: wrap;
   min-height: 100vh;
 }
 
-.boardContainer {
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3em;
+  width: 100%;
+  margin: 1em 0;
+  padding: 0 1em;
+}
+
+.playerContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.playerContainer h2 {
+  font-size: 2em;
+  color: var(--dark-blue);
+}
+
+.board {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
-  width: min(40vh, 40vh);
+  width: min(45vh, 90vh);
 }
 
 .cell {

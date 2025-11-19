@@ -15,6 +15,7 @@ export function newGame(players = undefined) {
   player1.gameboard.reset()
   player2.gameboard.reset()
   renderNewBoards(player1, player2)
+  displayPlayerNames(player1, player2)
 }
 
 export function rename(player, newName) {
@@ -40,19 +41,19 @@ function renderNewBoards(player1, player2) {
 function assembleBoard(width, height) {
   const totalCells = width * height
   const players = ['player1', 'player2']
-  const boardContainers = document.querySelectorAll('.boardContainer')
+  const boards = document.querySelectorAll('.board')
   for (let i = 0; i < players.length; i++) {
-    const boardFragment = boardFragmentCreator(totalCells)
-    const targetBoardContainer = boardContainers[i]
-    console.log(targetBoardContainer)
-    targetBoardContainer.classList.add(`${players[i]}`)
-    targetBoardContainer.append(boardFragment)
+    const boardFragment = cellCreator(totalCells)
+    const targetBoard = boards[i]
+    console.log(targetBoard)
+    targetBoard.classList.add(`${players[i]}`)
+    targetBoard.append(boardFragment)
 
-    assignCoordsAsClassToCells(targetBoardContainer, width, height)
+    assignCoordsAsClassToCells(targetBoard, width, height)
   }
 }
 
-function boardFragmentCreator(totalCells) {
+function cellCreator(totalCells) {
   let boardFragment = document.createDocumentFragment()
   for (let i = 0; i < totalCells; i++) {
     const cell = document.createElement('button')
@@ -70,5 +71,17 @@ function assignCoordsAsClassToCells(board, width, height) {
       cell.classList.add(`[${x},${y}]`)
       i++
     }
+  }
+}
+
+function displayPlayerNames(player1, player2) {
+  const players = [player1, player2]
+  const container = document.querySelector('.container')
+  const playerContainers = container.children
+  console.log(playerContainers)
+  for (let i = 0; i < playerContainers.length; i++) {
+    let h2 = document.createElement('h2')
+    h2.textContent = players[i].name
+    playerContainers[i].prepend(h2)
   }
 }
