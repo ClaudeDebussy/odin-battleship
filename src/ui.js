@@ -87,5 +87,8 @@ function displayPlayerNames(player1, player2) {
 }
 
 export function placeShips(players) {
-  for (let i = 0; i < players.length; i++) {}
+  const player1 = players[0]
+  const player2 = players[1]
+  // Player places ships
+  player2.gameboard.computerPlaceShips()
 }

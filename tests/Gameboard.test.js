@@ -91,10 +91,10 @@ describe('managing gameboard', () => {
 
   it('should return gameboard as a list', () => {
     gameboard.reset()
-    let list = gameboard.getGameboardAsList()
+    let list = gameboard.getGameboardStateAsList()
     expect(list.length).toBe(100)
     gameboard.placeNewShip('submarine', 'west', [0, 9])
-    list = gameboard.getGameboardAsList()
+    list = gameboard.getGameboardStateAsList()
     expect(list[0]).toBe(1)
   })
 
@@ -125,5 +125,12 @@ describe('managing gameboard', () => {
     expect(() => gameboard.placeNewShip('destroyer', 'west', [6, 5])).toThrow(
       'Ship position conflicts with other ships',
     )
+  })
+
+  it('should place computer ships', () => {
+    gameboard.reset()
+    gameboard.computerPlaceShips()
+    expect(gameboard.ships.length).toBe(5)
+    console.log(gameboard.ships)
   })
 })

@@ -13,14 +13,14 @@ export class Gameboard {
 
   placeNewShip(type, orientation, position) {
     // Check if ship already there
-    const ship = new Ship({ type, orientation, position }) // TODO
+    const ship = new Ship({ type, orientation, position })
 
     // Check if desired ship position is inside gameboard
     if (!this.#shipPositionIsInsideGameboard(ship)) {
       throw new Error('Invalid gameboard position.')
     }
 
-    // TODO Check if ship position conflicts with another ship's position
+    // Check if ship position conflicts with another ship's position
     if (!this.#shipPositionHasNoConflictsWithOtherShips(ship)) {
       throw new Error('Ship position conflicts with other ships.')
     }
@@ -210,7 +210,42 @@ export class Gameboard {
     if (this.shipsSunk.length === this.ships.length) return true
   }
 
-  getGameboardAsList() {
+  computerPlaceShips() {
+    const shipList = [
+      'carrier',
+      'battleship',
+      'cruiser',
+      'submarine',
+      'destroyer',
+    ]
+    while (shipList.length) {
+      for (let i = 0; i < shipList.length; ) {
+        const type = shipList[i]
+        const orientation = this.#generateRandomOrientation()
+        const position = this.#generateRandomCoordinate()
+
+        try {
+          this.placeNewShip(type, orientation, position)
+          shipList.shift()
+        } catch (error) {
+          console.log(`Failed to place ${type}. Retrying...`)
+        }
+      }
+    }
+    console.log("Placed computer's ships successfully!")
+  }
+
+  #generateRandomOrientation() {
+    const orientations = ['north', 'south', 'east', 'west']
+    const randomNumber = Math.floor(Math.random() * 4)
+    return orientations[randomNumber]
+  }
+
+  #generateRandomCoordinate() {
+    return [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)]
+  }
+
+  getGameboardStateAsList() {
     const list = []
     const width = this.width
     const height = this.height
