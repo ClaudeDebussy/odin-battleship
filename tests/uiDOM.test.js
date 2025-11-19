@@ -7,15 +7,21 @@ import { newGame } from '../src/ui'
 describe('writing to the DOM', () => {
   it('should render a new board', () => {
     document.body.innerHTML = `<div class="container">
-      <div id="player1BoardContainer"></div>
-      <div id="player2BoardContainer"></div>
-    </div>`
+      <div class="playerContainer">
+        <div class="board"></div>
+      </div>
+      <div class="playerContainer">
+        <div class="board"></div>
+      </div>
+      <div class="bottomNavBar">
+        <button class="newGame">New game</button>
+      </div>
+      <h3 class="turnIndicator left">Player 1's turn</h3>
+      <h3 class="turnIndicator right">Computer's turn</h3>`
 
     newGame()
-    expect(
-      document.getElementById('player1BoardContainer').childElementCount,
-    ).toBe(100)
-    let firstCell = document.getElementById('player1BoardContainer').firstChild
+    expect(document.querySelector('.board').childElementCount).toBe(100)
+    let firstCell = document.querySelector('.board').firstChild
     expect(firstCell.className).toBe('cell [0,9]')
   })
 })
