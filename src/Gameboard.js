@@ -20,6 +20,11 @@ export class Gameboard {
       throw new Error('Invalid gameboard position.')
     }
 
+    // TODO Check if ship position conflicts with another ship's position
+    if (!this.#shipPositionHasNoConflictsWithOtherShips(ship)) {
+      throw new Error('Ship position conflicts with other ships.')
+    }
+
     this.ships.push(ship)
   }
 
@@ -40,6 +45,36 @@ export class Gameboard {
         shipCells[i][1] < 0
       ) {
         return false
+      }
+    }
+    return true
+  }
+
+  #shipPositionHasNoConflictsWithOtherShips(ship) {
+    if (!(ship instanceof Ship)) {
+      throw new Error('Parameter must be instance of Ship object.')
+    }
+
+    const placingShipCells = this.#getShipCells(
+      ship.position,
+      ship.orientation,
+      ship.length,
+    )
+
+    const shipsOnTheBoard = this.ships
+
+    for (let i = 0; i < shipsOnTheBoard.length; i++) {
+      const checkShipCells = this.#getShipCells(
+        shipsOnTheBoard[i].position,
+        shipsOnTheBoard[i].orientation,
+        shipsOnTheBoard[i].length,
+      )
+      for (let j = 0; j < placingShipCells.length; j++) {
+        for (let k = 0; k < checkShipCells.length; k++) {
+          if (this.#arraysAreEqual(placingShipCells[j], checkShipCells[k])) {
+            return false
+          }
+        }
       }
     }
     return true

@@ -7,14 +7,18 @@ gameboard.placeNewShip()
 
 describe('managing gameboard', () => {
   it('should throw error if not valid gameboard position', () => {
-    expect(() =>
-      gameboard.placeNewShip('submarine', 'north', [5, 10]),
-    ).toThrow()
-    expect(() =>
-      gameboard.placeNewShip('submarine', 'north', [10, 5]),
-    ).toThrow()
-    expect(() => gameboard.placeNewShip('submarine', 'west', [9, 5])).toThrow()
-    expect(() => gameboard.placeNewShip('submarine', 'east', [0, 5])).toThrow()
+    expect(() => gameboard.placeNewShip('submarine', 'north', [5, 10])).toThrow(
+      'Invalid gameboard position.',
+    )
+    expect(() => gameboard.placeNewShip('submarine', 'north', [10, 5])).toThrow(
+      'Invalid gameboard position.',
+    )
+    expect(() => gameboard.placeNewShip('submarine', 'west', [9, 5])).toThrow(
+      'Invalid gameboard position.',
+    )
+    expect(() => gameboard.placeNewShip('submarine', 'east', [0, 5])).toThrow(
+      'Invalid gameboard position.',
+    )
   })
 
   const data = [
@@ -48,10 +52,18 @@ describe('managing gameboard', () => {
   })
 
   it('should handle successful hits', () => {
-    expect(() => gameboard.receiveAttack([11, 0])).toThrow()
-    expect(() => gameboard.receiveAttack([0, 11])).toThrow()
-    expect(() => gameboard.receiveAttack([-1, 0])).toThrow()
-    expect(() => gameboard.receiveAttack([0, -1])).toThrow()
+    expect(() => gameboard.receiveAttack([11, 0])).toThrow(
+      'Invalid gameboard position.',
+    )
+    expect(() => gameboard.receiveAttack([0, 11])).toThrow(
+      'Invalid gameboard position.',
+    )
+    expect(() => gameboard.receiveAttack([-1, 0])).toThrow(
+      'Invalid gameboard position.',
+    )
+    expect(() => gameboard.receiveAttack([0, -1])).toThrow(
+      'Invalid gameboard position.',
+    )
 
     gameboard.placeNewShip('submarine', 'north', [5, 5])
     gameboard.receiveAttack([5, 5])
@@ -84,5 +96,34 @@ describe('managing gameboard', () => {
     gameboard.placeNewShip('submarine', 'west', [0, 9])
     list = gameboard.getGameboardAsList()
     expect(list[0]).toBe(1)
+  })
+
+  it('should check for ship conflicts', () => {
+    gameboard.reset()
+    gameboard.placeNewShip('submarine', 'north', [5, 5])
+    expect(gameboard.cellHasShip([5, 3])).toBeTruthy()
+    expect(gameboard.cellHasShip([5, 2])).toBeFalsy()
+    expect(() => gameboard.placeNewShip('destroyer', 'west', [5, 5])).toThrow(
+      'Ship position conflicts with other ships.',
+    )
+    expect(() => gameboard.placeNewShip('destroyer', 'west', [5, 4])).toThrow(
+      'Ship position conflicts with other ships.',
+    )
+    expect(() => gameboard.placeNewShip('destroyer', 'west', [5, 3])).toThrow(
+      'Ship position conflicts with other ships.',
+    )
+
+    gameboard.placeNewShip('cruiser', 'south', [6, 3])
+    expect(gameboard.cellHasShip([6, 3])).toBeTruthy()
+    expect(gameboard.cellHasShip([6, 6])).toBeFalsy()
+    expect(() => gameboard.placeNewShip('destroyer', 'west', [6, 3])).toThrow(
+      'Ship position conflicts with other ships',
+    )
+    expect(() => gameboard.placeNewShip('destroyer', 'west', [6, 4])).toThrow(
+      'Ship position conflicts with other ships',
+    )
+    expect(() => gameboard.placeNewShip('destroyer', 'west', [6, 5])).toThrow(
+      'Ship position conflicts with other ships',
+    )
   })
 })

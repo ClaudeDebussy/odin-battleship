@@ -16,6 +16,8 @@ export function newGame(players = undefined) {
   player2.gameboard.reset()
   renderNewBoards(player1, player2)
   displayPlayerNames(player1, player2)
+
+  return [player1, player2]
 }
 
 export function rename(player, newName) {
@@ -82,4 +84,8 @@ function displayPlayerNames(player1, player2) {
     h2.textContent = players[i].name
     playerContainers[i].prepend(h2)
   }
+}
+
+export function placeShips(players) {
+  for (let i = 0; i < players.length; i++) {}
 }
