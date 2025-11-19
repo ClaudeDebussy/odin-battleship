@@ -141,6 +141,7 @@ body {
 
 .cell:active {
   background-color: var(--dark-blue);
+  cursor: crosshair;
 }
 
 .bottomNavBar {
