@@ -89,6 +89,24 @@ function displayPlayerNames(player1, player2) {
 export function placeShips(players) {
   const player1 = players[0]
   const player2 = players[1]
-  // Player places ships
+
+  player1PlaceShips(player1)
+  computerPlayerPlaceShips(player2)
+}
+
+function player1PlaceShips(player1) {
+  const board = document.querySelector('.board')
+  createEventListener(board)
+}
+
+function createEventListener(board) {
+  board.addEventListener('click', (event) => {
+    if (event.target.matches('.cell')) {
+      console.log('Cell clicked:', event.target.classList[1])
+    }
+  })
+}
+
+function computerPlayerPlaceShips(player2) {
   player2.gameboard.computerPlaceShips()
 }
