@@ -90,23 +90,67 @@ export function placeShips(players) {
   const player1 = players[0]
   const player2 = players[1]
 
-  player1PlaceShips(player1)
+  humanPlaceShips(player1)
   computerPlayerPlaceShips(player2)
 }
 
-function player1PlaceShips(player1) {
+async function humanPlaceShips(player) {
+  const shipList = [
+    'carrier',
+    'battleship',
+    'cruiser',
+    'submarine',
+    'destroyer',
+  ]
+
+  let currentOrientation = 'north'
+  let orientationList = ['east', 'south', 'west', 'north']
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'r') {
+      currentOrientation = orientationList[0]
+      orientationList.shift()
+      orientationList.push(currentOrientation)
+      console.log(currentOrientation)
+    }
+  })
+
   const board = document.querySelector('.board')
-  createEventListener(board)
+  for (const shipType of shipList) {
+    let placed = false
+    while (!placed) {
+      const coords = await getClickCoords(board)
+
+      try {
+        player.gameboard.placeNewShip(shipType, currentOrientation, coords)
+
+        renderBoard() // TODO
+        placed = true
+      } catch (error) {
+        console.log(error.message)
+      }
+    }
+  }
 }
 
-function createEventListener(board) {
-  board.addEventListener('click', (event) => {
-    if (event.target.matches('.cell')) {
-      console.log('Cell clicked:', event.target.classList[1])
+function getClickCoords(board) {
+  return new Promise((resolve) => {
+    const clickHandler = (event) => {
+      if (event.target.matches('.cell')) {
+        board.removeEventListener('click', clickHandler)
+        const coordinateString = event.target.classList[1]
+        const coords = JSON.parse(coordinateString)
+
+        resolve(coords)
+      }
     }
+    board.addEventListener('click', clickHandler)
   })
 }
 
 function computerPlayerPlaceShips(player2) {
   player2.gameboard.computerPlaceShips()
+}
+
+function renderBoard() {
+  console.log('Board rendered!')
 }
