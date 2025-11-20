@@ -78,6 +78,8 @@ h6 {
   --dark-blue: #183446;
   --light-blue: #046e8f;
   --lighter-blue: #06a9db;
+  --grey: #8693ab;
+  --dark-grey: #5c6a84;
 
   --navBarHeight: 4em;
 }
@@ -188,4 +190,12 @@ body {
 .bottomNavBar .newGame:active {
   background-color: var(--lighter-blue);
   color: var(--white);
+}
+
+.cell.hasShip {
+  background-color: var(--grey);
+}
+
+.cell.hasShip:hover {
+  background-color: var(--dark-grey);
 }

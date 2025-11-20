@@ -123,7 +123,7 @@ async function humanPlaceShips(player) {
       try {
         player.gameboard.placeNewShip(shipType, currentOrientation, coords)
 
-        renderBoard() // TODO
+        renderPlayerBoard(player)
         placed = true
       } catch (error) {
         console.log(error.message)
@@ -151,6 +151,19 @@ function computerPlayerPlaceShips(player2) {
   player2.gameboard.computerPlaceShips()
 }
 
-function renderBoard() {
-  console.log('Board rendered!')
+function renderPlayerBoard(player) {
+  const board = document.querySelector('.board')
+  const cells = board.children
+  for (let i = 0; i < cells.length; i++) {
+    const cell = cells[i]
+    const coordinateString = cell.classList[1]
+    const coords = JSON.parse(coordinateString)
+
+    if (player.gameboard.cellHasShip(coords)) {
+      cell.classList.add('hasShip')
+    }
+    if (player.gameboard.cellHasAlreadyBeenHit(coords)) {
+      cell.classList.add('hit')
+    }
+  }
 }
