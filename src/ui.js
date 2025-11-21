@@ -1,5 +1,5 @@
 import { Player } from './Player.js'
-import { Gameboard } from './Gameboard.js'
+import { Ship } from './Ship.js'
 
 export function newGame(players = undefined) {
   let player1
@@ -103,22 +103,26 @@ async function humanPlaceShips(player) {
     'destroyer',
   ]
 
+  const rotateFn = () => {
+    currentOrientation = orientationList[0]
+    orientationList.shift()
+    orientationList.push(currentOrientation)
+  }
+
   let currentOrientation = 'north'
   let orientationList = ['east', 'south', 'west', 'north']
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'r') {
-      currentOrientation = orientationList[0]
-      orientationList.shift()
-      orientationList.push(currentOrientation)
-      console.log(currentOrientation)
-    }
-  })
 
   const board = document.querySelector('.board')
   for (const shipType of shipList) {
     let placed = false
     while (!placed) {
-      const coords = await getClickCoords(board)
+      const coords = await getClickCoords(
+        board,
+        player.gameboard,
+        shipType,
+        () => currentOrientation,
+        rotateFn,
+      )
 
       try {
         player.gameboard.placeNewShip(shipType, currentOrientation, coords)
@@ -132,19 +136,90 @@ async function humanPlaceShips(player) {
   }
 }
 
-function getClickCoords(board) {
+function getClickCoords(
+  board,
+  gameboard,
+  shipType,
+  getOrientation,
+  rotateOrientation,
+) {
   return new Promise((resolve) => {
+    let lastHoveredCell = null
+
+    const paintShadow = (cell) => {
+      clearHighlights(board)
+
+      if (!cell || !cell.matches(`.cell`)) return
+
+      const coordinateString = cell.classList[1]
+
+      const startCoords = JSON.parse(coordinateString)
+      const currentOrientation = getOrientation()
+      const length = Ship.shipLength(shipType)
+
+      const footprint = gameboard.getShipCells(
+        startCoords,
+        currentOrientation,
+        length,
+      )
+
+      footprint.forEach((coord) => {
+        const cell = getCellFromCoords(board, coord)
+        if (cell) cell.classList.add('hover-preview')
+      })
+    }
+
+    const mouseOverHandler = (event) => {
+      if (event.target.matches('.cell')) {
+        lastHoveredCell = event.target
+        paintShadow(event.target)
+      }
+    }
+
+    const keyHandler = (event) => {
+      if (event.key === 'r') {
+        if (rotateOrientation) rotateOrientation()
+
+        if (lastHoveredCell) {
+          paintShadow(lastHoveredCell)
+        }
+      }
+    }
+
+    const mouseOutHandler = () => {
+      clearHighlights(board)
+      lastHoveredCell = null
+    }
+
     const clickHandler = (event) => {
       if (event.target.matches('.cell')) {
         board.removeEventListener('click', clickHandler)
+        board.removeEventListener('mouseover', mouseOverHandler)
+        board.removeEventListener('mouseout', mouseOutHandler)
+        document.removeEventListener('keydown', keyHandler)
+
+        clearHighlights(board)
+
         const coordinateString = event.target.classList[1]
         const coords = JSON.parse(coordinateString)
-
         resolve(coords)
       }
     }
+
     board.addEventListener('click', clickHandler)
+    board.addEventListener('mouseover', mouseOverHandler)
+    board.addEventListener('mouseout', mouseOutHandler)
+    document.addEventListener('keydown', keyHandler)
   })
+}
+
+function clearHighlights(board) {
+  const cells = board.querySelectorAll('.hover-preview')
+  cells.forEach((cell) => cell.classList.remove('hover-preview'))
+}
+
+function getCellFromCoords(board, [x, y]) {
+  return board.querySelector(`[class*="[${x},${y}]"]`)
 }
 
 function computerPlayerPlaceShips(player2) {

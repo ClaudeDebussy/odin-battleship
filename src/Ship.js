@@ -5,14 +5,14 @@ export class Ship {
     position = [5, 5],
   } = {}) {
     this.type = type
-    this.length = this.#SHIP_LENGTH(this.type)
+    this.length = Ship.shipLength(this.type)
     this.orientation = orientation
     this.position = position
     this.timesHit = 0
     this.sunk = false
   }
 
-  #SHIP_LENGTH(type) {
+  static shipLength(type) {
     switch (type) {
       case 'carrier':
         return 5

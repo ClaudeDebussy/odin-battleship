@@ -199,3 +199,7 @@ body {
 .cell.hasShip:hover {
   background-color: var(--dark-grey);
 }
+
+.hover-preview {
+  background-color: var(--dark-grey);
+}

@@ -32,7 +32,7 @@ export class Gameboard {
     if (!(ship instanceof Ship)) {
       throw new Error('Parameter must be instance of Ship object.')
     }
-    const shipCells = this.#getShipCells(
+    const shipCells = this.getShipCells(
       ship.position,
       ship.orientation,
       ship.length,
@@ -55,7 +55,7 @@ export class Gameboard {
       throw new Error('Parameter must be instance of Ship object.')
     }
 
-    const placingShipCells = this.#getShipCells(
+    const placingShipCells = this.getShipCells(
       ship.position,
       ship.orientation,
       ship.length,
@@ -64,7 +64,7 @@ export class Gameboard {
     const shipsOnTheBoard = this.ships
 
     for (let i = 0; i < shipsOnTheBoard.length; i++) {
-      const checkShipCells = this.#getShipCells(
+      const checkShipCells = this.getShipCells(
         shipsOnTheBoard[i].position,
         shipsOnTheBoard[i].orientation,
         shipsOnTheBoard[i].length,
@@ -83,7 +83,7 @@ export class Gameboard {
   cellHasShip(cell) {
     // Check if ANY ship has a cell matching the input cell
     return this.ships.some((ship) => {
-      const cellsWithShips = this.#getShipCells(
+      const cellsWithShips = this.getShipCells(
         ship.position,
         ship.orientation,
         ship.length,
@@ -94,7 +94,7 @@ export class Gameboard {
     })
   }
 
-  #getShipCells(position, orientation, length) {
+  getShipCells(position, orientation, length) {
     const cells = []
 
     const x = position[0]
@@ -172,7 +172,7 @@ export class Gameboard {
   getShipAtLocation(cell) {
     for (let i = 0; i < this.ships.length; i++) {
       const ship = this.ships[i]
-      const shipCells = this.#getShipCells(
+      const shipCells = this.getShipCells(
         ship.position,
         ship.orientation,
         ship.length,
