@@ -1,5 +1,6 @@
 import { Player } from './Player.js'
 import { Ship } from './Ship.js'
+import PubSub from './PubSub.js'
 
 export function newGame(players = undefined) {
   let player1
@@ -103,14 +104,16 @@ async function humanPlaceShips(player) {
     'destroyer',
   ]
 
+  let currentOrientation = 'north'
+  let orientationList = ['east', 'south', 'west', 'north']
+
   const rotateFn = () => {
     currentOrientation = orientationList[0]
     orientationList.shift()
     orientationList.push(currentOrientation)
   }
 
-  let currentOrientation = 'north'
-  let orientationList = ['east', 'south', 'west', 'north']
+  PubSub.publish('PLACE_SHIPS', player.name)
 
   const board = document.querySelector('.board')
   for (const shipType of shipList) {

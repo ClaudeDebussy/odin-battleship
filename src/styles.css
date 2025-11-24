@@ -81,7 +81,7 @@ h6 {
   --grey: #8693ab;
   --dark-grey: #5c6a84;
 
-  --navBarHeight: 4em;
+  --navBarHeight: 6em;
 }
 
 html,
@@ -154,6 +154,7 @@ body {
   padding: 0.5em;
   background-color: var(--violet);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -171,6 +172,11 @@ body {
 
 .turnIndicator.right {
   right: 0;
+}
+
+.bottomNavBar .message {
+  color: var(--white);
+  padding-bottom: 1em;
 }
 
 .bottomNavBar .newGame {
@@ -200,6 +206,6 @@ body {
   background-color: var(--dark-grey);
 }
 
-.hover-preview {
+.cell.hover-preview {
   background-color: var(--dark-grey);
 }
