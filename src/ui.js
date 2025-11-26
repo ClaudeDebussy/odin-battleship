@@ -279,10 +279,14 @@ function setStartingPlayer(players) {
 
 async function takeTurns(players) {
   if (players[0].startingPlayer === true) {
+    PubSub.publish('PLAYER_GO', players[0].name)
     await player1Fire(players[1])
+    PubSub.publish('COMPUTER_GO')
     await computerFire(players[0])
   } else {
-    await computerFire(players[0]) //TODO
+    PubSub.publish('COMPUTER_GO')
+    await computerFire(players[0])
+    PubSub.publish('PLAYER_GO', players[0].name)
     await player1Fire(players[1])
   }
 }
@@ -399,15 +403,25 @@ function clearAttackHighlights(board) {
 
 async function computerFire(player) {
   PubSub.publish('COMPUTER_GO')
+  await sleep(600)
   let timesHit = player.gameboard.hits.length
   while (timesHit === player.gameboard.hits.length) {
     if (player.gameboard.successfulHits.length === 0) {
-      const cell = randomCoord()
+      try {
+        const cell = randomCoord()
+        player.gameboard.receiveAttack(cell)
+        renderPlayerBoardReceiveAttacks(player)
+        await sleep(1000)
+      } catch (error) {
+        console.error(error)
+      }
+    } else if (previousHitWasSuccessful(player)) {
+      const previousHit = player.gameboard.hits.at(-1)
+      const cell = player.gameboard.pickRandomAdjacentCell(previousHit)
       try {
         player.gameboard.receiveAttack(cell)
         renderPlayerBoardReceiveAttacks(player)
-        PubSub.publish('COMPUTER_ATTACKS', cell)
-        sleep(500)
+        await sleep(1000)
       } catch (error) {
         console.error(error)
       }
@@ -416,13 +430,23 @@ async function computerFire(player) {
       try {
         player.gameboard.receiveAttack(cell)
         renderPlayerBoardReceiveAttacks(player)
-        PubSub.publish('COMPUTER_ATTACKS', cell)
-        sleep(500)
+        await sleep(1000)
       } catch (error) {
         console.error(error)
       }
     }
   }
+  PubSub.publish('COMPUTER_ATTACKS', player.gameboard.hits.at(-1))
+  await sleep(1000)
+}
+
+function previousHitWasSuccessful(player) {
+  const previousHit = player.gameboard.hits.at(-1)
+  const previousSuccessfulHit = player.gameboard.successfulHits.at(-1)
+
+  if (player.gameboard.arraysAreEqual(previousHit, previousSuccessfulHit)) {
+    return true
+  } else return false
 }
 
 function randomCoord() {

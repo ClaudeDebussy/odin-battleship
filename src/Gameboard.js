@@ -72,7 +72,7 @@ export class Gameboard {
       )
       for (let j = 0; j < placingShipCells.length; j++) {
         for (let k = 0; k < checkShipCells.length; k++) {
-          if (this.#arraysAreEqual(placingShipCells[j], checkShipCells[k])) {
+          if (this.arraysAreEqual(placingShipCells[j], checkShipCells[k])) {
             return false
           }
         }
@@ -90,7 +90,7 @@ export class Gameboard {
         ship.length,
       )
       return cellsWithShips.some((shipCell) =>
-        this.#arraysAreEqual(shipCell, cell),
+        this.arraysAreEqual(shipCell, cell),
       )
     })
   }
@@ -126,7 +126,7 @@ export class Gameboard {
     return cells
   }
 
-  #arraysAreEqual(arr1, arr2) {
+  arraysAreEqual(arr1, arr2) {
     if (arr1.length != arr2.length) return false
     for (let i = 0; i < arr1.length; i++) {
       if (arr1[i] != arr2[i]) {
@@ -158,7 +158,7 @@ export class Gameboard {
 
   cellHasAlreadyBeenHit(cell) {
     for (let i = 0; i < this.hits.length; i++) {
-      if (this.#arraysAreEqual(cell, this.hits[i])) return true
+      if (this.arraysAreEqual(cell, this.hits[i])) return true
     }
   }
 
@@ -186,7 +186,7 @@ export class Gameboard {
 
   #shipCellsAreTargetCell(shipCells, target) {
     for (let i = 0; i < shipCells.length; i++) {
-      if (this.#arraysAreEqual(shipCells[i], target)) return true
+      if (this.arraysAreEqual(shipCells[i], target)) return true
     }
   }
 
@@ -266,5 +266,27 @@ export class Gameboard {
       }
     }
     return list
+  }
+
+  pickRandomAdjacentCell(cell) {
+    const possibleCells = []
+    const validAdjacentCells = []
+    const x = cell[0]
+    const y = cell[1]
+
+    possibleCells.push([x, y + 1])
+    possibleCells.push([x + 1, y])
+    possibleCells.push([x, y - 1])
+    possibleCells.push([x - 1, y])
+
+    possibleCells.forEach((cell) => {
+      if (this.#positionIsInsideGameboard(cell)) {
+        validAdjacentCells.push(cell)
+      }
+    })
+
+    const randomNumber = Math.floor(Math.random() * validAdjacentCells.length)
+
+    return validAdjacentCells[randomNumber]
   }
 }
