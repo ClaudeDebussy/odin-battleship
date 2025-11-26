@@ -15,6 +15,8 @@ export function newGame(players = undefined) {
   }
   player1.gameboard.reset()
   player2.gameboard.reset()
+  player1.reset()
+  player2.reset()
   renderNewBoards(player1, player2)
   displayPlayerNames(player1, player2)
 
@@ -87,12 +89,12 @@ function displayPlayerNames(player1, player2) {
   }
 }
 
-export function placeShips(players) {
+export async function placeShips(players) {
   const player1 = players[0]
   const player2 = players[1]
 
-  humanPlaceShips(player1)
-  computerPlayerPlaceShips(player2)
+  await humanPlaceShips(player1)
+  await computerPlayerPlaceShips(player2)
 }
 
 async function humanPlaceShips(player) {
@@ -119,7 +121,7 @@ async function humanPlaceShips(player) {
   for (const shipType of shipList) {
     let placed = false
     while (!placed) {
-      const coords = await getClickCoords(
+      const coords = await getClickCoordsForShipPlacement(
         board,
         player.gameboard,
         shipType,
@@ -133,13 +135,13 @@ async function humanPlaceShips(player) {
         renderPlayerBoard(player)
         placed = true
       } catch (error) {
-        console.log(error.message)
+        console.error(error.message)
       }
     }
   }
 }
 
-function getClickCoords(
+function getClickCoordsForShipPlacement(
   board,
   gameboard,
   shipType,
@@ -225,7 +227,10 @@ function getCellFromCoords(board, [x, y]) {
   return board.querySelector(`[class*="[${x},${y}]"]`)
 }
 
-function computerPlayerPlaceShips(player2) {
+async function computerPlayerPlaceShips(player2) {
+  PubSub.publish('COMPUTER_PLACE_SHIPS')
+  await sleep(1500)
+
   player2.gameboard.computerPlaceShips()
 }
 
@@ -244,4 +249,114 @@ function renderPlayerBoard(player) {
       cell.classList.add('hit')
     }
   }
+}
+
+export async function playerTurns(players) {
+  const startingPlayer = setStartingPlayer(players)
+
+  PubSub.publish('WHO_STARTS', startingPlayer.name)
+  await sleep(1500)
+
+  while (
+    players[0].gameboard.gameOver != true &&
+    players[1].gameboard.gameOver != true
+  ) {
+    await takeTurns(players)
+  }
+}
+
+async function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+function setStartingPlayer(players) {
+  const randomNumber = Math.floor(Math.random() * 11)
+  if (randomNumber % 2 === 0) {
+    players[0].setStartingPlayer()
+    return players[0]
+  } else {
+    players[1].setStartingPlayer()
+    return players[1]
+  }
+}
+
+async function takeTurns(players) {
+  if (players[0].startingPlayer === true) {
+    await player1Fire(players[0])
+    await computerFire(players[1])
+  } else {
+    await computerFire() //TODO
+    await player1Fire()
+  }
+}
+
+async function player1Fire(player) {
+  const board = document.querySelector('.board')
+  let shotFired = false
+
+  while (!shotFired) {
+    const coords = await getBoardClick(board, player.gameboard)
+
+    try {
+      player.gameboard.receiveAttack(coords)
+      renderPlayerBoard(player)
+      shotFired = true
+    } catch (error) {
+      console.error(error.message)
+    }
+  }
+}
+
+function getBoardClick(board, gameboard) {
+  return new Promise((resolve) => {
+    let lastHoveredCell = null
+
+    const paintAttack = (cell) => {
+      clearAttackHighlights(board)
+
+      if (!cell || !cell.matches(`.cell`)) return
+
+      const coordinateString = cell.classList[1]
+
+      const coord = JSON.parse(coordinateString)
+
+      const cellToPaint = getCellFromCoords(board, coord)
+      if (cellToPaint) cellToPaint.classList.add('attack-preview')
+    }
+
+    const mouseOverHandler = (event) => {
+      if (event.target.matches('.cell')) {
+        lastHoveredCell = event.target
+        paintAttack(event.target)
+      }
+    }
+
+    const mouseOutHandler = () => {
+      clearAttackHighlights(board)
+      lastHoveredCell = null
+    }
+
+    const clickHandler = (event) => {
+      if (event.target.matches('.cell')) {
+        board.removeEventListener('click', clickHandler)
+        board.removeEventListener('mouseover', mouseOverHandler)
+        board.removeEventListener('mouseout', mouseOutHandler)
+
+        clearAttackHighlights(board)
+
+        const coordinateString = event.target.classList[1]
+        const coords = JSON.parse(coordinateString)
+        resolve(coords)
+      }
+    }
+
+    board.addEventListener('click', clickHandler)
+    board.addEventListener('mouseover', mouseOverHandler)
+    board.addEventListener('mouseout', mouseOutHandler)
+  })
+}
+
+function clearAttackHighlights(board) {
+  const cells = board.querySelectorAll('.attack-preview')
+  cells.forEach((cell) => cell.classList.remove('attack-preview'))
 }

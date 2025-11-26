@@ -209,3 +209,7 @@ body {
 .cell.hover-preview {
   background-color: var(--dark-grey);
 }
+
+.cell.attack-preview {
+  background-color: var(--violet);
+}

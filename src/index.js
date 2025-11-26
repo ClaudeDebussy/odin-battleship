@@ -1,12 +1,13 @@
 import { Gameboard } from './Gameboard.js'
-import { newGame, rename, placeShips } from './ui.js'
+import { newGame, placeShips, playerTurns } from './ui.js'
 import './styles.css'
 import Message from './Message.js'
 
-function game() {
+async function game() {
   Message.init()
   const players = newGame()
-  placeShips(players)
+  await placeShips(players)
+  playerTurns(players)
 }
 
 game()
