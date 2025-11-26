@@ -117,7 +117,7 @@ async function humanPlaceShips(player) {
 
   PubSub.publish('PLACE_SHIPS', player.name)
 
-  const board = document.querySelector('.board')
+  const board = document.querySelector('.board.player1')
   for (const shipType of shipList) {
     let placed = false
     while (!placed) {
@@ -132,7 +132,7 @@ async function humanPlaceShips(player) {
       try {
         player.gameboard.placeNewShip(shipType, currentOrientation, coords)
 
-        renderPlayerBoard(player)
+        renderPlayerBoardPlaceShips(player)
         placed = true
       } catch (error) {
         console.error(error.message)
@@ -234,8 +234,8 @@ async function computerPlayerPlaceShips(player2) {
   player2.gameboard.computerPlaceShips()
 }
 
-function renderPlayerBoard(player) {
-  const board = document.querySelector('.board')
+function renderPlayerBoardPlaceShips(player) {
+  const board = document.querySelector('.board.player1')
   const cells = board.children
   for (let i = 0; i < cells.length; i++) {
     const cell = cells[i]
@@ -244,9 +244,6 @@ function renderPlayerBoard(player) {
 
     if (player.gameboard.cellHasShip(coords)) {
       cell.classList.add('hasShip')
-    }
-    if (player.gameboard.cellHasAlreadyBeenHit(coords)) {
-      cell.classList.add('hit')
     }
   }
 }
@@ -282,16 +279,16 @@ function setStartingPlayer(players) {
 
 async function takeTurns(players) {
   if (players[0].startingPlayer === true) {
-    await player1Fire(players[0])
-    await computerFire(players[1])
+    await player1Fire(players[1])
+    await computerFire(players[0])
   } else {
-    await computerFire() //TODO
-    await player1Fire()
+    await computerFire(players[0]) //TODO
+    await player1Fire(players[1])
   }
 }
 
 async function player1Fire(player) {
-  const board = document.querySelector('.board')
+  const board = document.querySelector('.board.player2')
   let shotFired = false
 
   while (!shotFired) {
@@ -299,7 +296,7 @@ async function player1Fire(player) {
 
     try {
       player.gameboard.receiveAttack(coords)
-      renderPlayerBoard(player)
+      renderComputerBoardReceiveAttacks(player)
       shotFired = true
     } catch (error) {
       console.error(error.message)
@@ -356,7 +353,80 @@ function getBoardClick(board, gameboard) {
   })
 }
 
+function renderComputerBoardReceiveAttacks(player) {
+  const board = document.querySelector('.board.player2')
+  const cells = board.children
+  for (let i = 0; i < cells.length; i++) {
+    const cell = cells[i]
+    const coordinateString = cell.classList[1]
+    const coords = JSON.parse(coordinateString)
+
+    if (player.gameboard.cellHasAlreadyBeenHit(coords)) {
+      cell.classList.add('hit')
+    }
+
+    if (
+      player.gameboard.cellHasAlreadyBeenHit(coords) &&
+      player.gameboard.cellHasShip(coords)
+    ) {
+      cell.classList.add('hasShip')
+    }
+  }
+}
+
+function renderPlayerBoardReceiveAttacks(player) {
+  const board = document.querySelector('.board.player1')
+  const cells = board.children
+  for (let i = 0; i < cells.length; i++) {
+    const cell = cells[i]
+    const coordinateString = cell.classList[1]
+    const coords = JSON.parse(coordinateString)
+
+    if (player.gameboard.cellHasShip(coords)) {
+      cell.classList.add('hasShip')
+    }
+
+    if (player.gameboard.cellHasAlreadyBeenHit(coords)) {
+      cell.classList.add('hit')
+    }
+  }
+}
+
 function clearAttackHighlights(board) {
   const cells = board.querySelectorAll('.attack-preview')
   cells.forEach((cell) => cell.classList.remove('attack-preview'))
+}
+
+async function computerFire(player) {
+  PubSub.publish('COMPUTER_GO')
+  let timesHit = player.gameboard.hits.length
+  while (timesHit === player.gameboard.hits.length) {
+    if (player.gameboard.successfulHits.length === 0) {
+      const cell = randomCoord()
+      try {
+        player.gameboard.receiveAttack(cell)
+        renderPlayerBoardReceiveAttacks(player)
+        PubSub.publish('COMPUTER_ATTACKS', cell)
+        sleep(500)
+      } catch (error) {
+        console.error(error)
+      }
+    } else {
+      const cell = randomCoord()
+      try {
+        player.gameboard.receiveAttack(cell)
+        renderPlayerBoardReceiveAttacks(player)
+        PubSub.publish('COMPUTER_ATTACKS', cell)
+        sleep(500)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  }
+}
+
+function randomCoord() {
+  const x = Math.floor(Math.random() * 10)
+  const y = Math.floor(Math.random() * 10)
+  return [x, y]
 }

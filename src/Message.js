@@ -8,7 +8,8 @@ const Message = {
     COMPUTER_PLACE_SHIPS: () => `Computer is placing its ships...`,
     WHO_STARTS: (name) => `${name} starts!`,
     PLAYER_GO: (name) => `${name}'s turn. Pick a cell to attack!`,
-    COMPUTER_GO: (name) => `${name}'s turn. Picking a cell to attack...`,
+    COMPUTER_GO: () => `Computer's turn. Picking a cell to attack...`,
+    COMPUTER_ATTACKS: (cell) => `Computer attack's ${cell}!`,
   },
 
   init: function () {
@@ -32,6 +33,10 @@ const Message = {
 
     PubSub.subscribe('COMPUTER_GO', (player) => {
       this.render('COMPUTER_GO', player)
+    })
+
+    PubSub.subscribe('COMPUTER_ATTACKS', (cell) => {
+      this.render('COMPUTER_ATTACKS', cell)
     })
   },
 

@@ -8,6 +8,7 @@ export class Gameboard {
 
   ships = []
   hits = []
+  successfulHits = []
   shipsSunk = []
   gameOver = false
 
@@ -138,6 +139,7 @@ export class Gameboard {
   reset() {
     this.ships = []
     this.hits = []
+    this.successfulHits = []
     this.shipsSunk = []
     this.gameOver = false
   }
@@ -161,6 +163,7 @@ export class Gameboard {
   }
 
   resolveSuccessfulHit(cell) {
+    this.successfulHits.push(cell)
     const shipAtThatLocation = this.getShipAtLocation(cell)
     shipAtThatLocation.hit()
     if (this.#shipHasSunk(shipAtThatLocation)) {

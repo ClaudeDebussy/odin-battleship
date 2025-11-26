@@ -213,3 +213,11 @@ body {
 .cell.attack-preview {
   background-color: var(--violet);
 }
+
+.cell.hit {
+  background-color: var(--dark-blue);
+}
+
+.cell.hasShip.hit {
+  background-color: red;
+}
