@@ -10,6 +10,7 @@ const Message = {
     PLAYER_GO: (name) => `${name}'s turn. Pick a cell to attack!`,
     COMPUTER_GO: () => `Computer's turn. Picking a cell to attack...`,
     COMPUTER_ATTACKS: (cell) => `Computer attack's ${cell}!`,
+    PLAYER_WINS: (name) => `${name} wins!!!`,
   },
 
   init: function () {
@@ -37,6 +38,10 @@ const Message = {
 
     PubSub.subscribe('COMPUTER_ATTACKS', (cell) => {
       this.render('COMPUTER_ATTACKS', cell)
+    })
+
+    PubSub.subscribe(`PLAYER_WINS`, (name) => {
+      this.render(`PLAYER_WINS`, name)
     })
   },
 

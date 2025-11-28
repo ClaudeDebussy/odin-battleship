@@ -260,6 +260,12 @@ export async function playerTurns(players) {
   ) {
     await takeTurns(players)
   }
+
+  if (players[0].gameboard.gameOver) {
+    PubSub.publish('PLAYER_WINS', players[0].name)
+  } else {
+    PubSub.publish('PLAYER_WINS', players[1].name)
+  }
 }
 
 async function sleep(ms) {

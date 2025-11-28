@@ -4,6 +4,14 @@ import './styles.css'
 import Message from './Message.js'
 
 async function game() {
+  const newGameButton = document.querySelector('.newGame')
+  const clickHandler = (event) => {
+    if (event.target.matches('.newGame')) {
+      window.location.reload()
+    }
+  }
+
+  newGameButton.addEventListener('click', clickHandler)
   Message.init()
   const players = newGame()
   await placeShips(players)
