@@ -229,7 +229,7 @@ function getCellFromCoords(board, [x, y]) {
 
 async function computerPlayerPlaceShips(player2) {
   PubSub.publish('COMPUTER_PLACE_SHIPS')
-  await sleep(1500)
+  await sleep(speeds.slow)
 
   player2.gameboard.computerPlaceShips()
 }
@@ -252,7 +252,7 @@ export async function playerTurns(players) {
   const startingPlayer = setStartingPlayer(players)
 
   PubSub.publish('WHO_STARTS', startingPlayer.name)
-  await sleep(1500)
+  await sleep(speeds.slow)
 
   while (
     players[0].gameboard.gameOver != true &&
@@ -262,9 +262,9 @@ export async function playerTurns(players) {
   }
 
   if (players[0].gameboard.gameOver) {
-    PubSub.publish('PLAYER_WINS', players[0].name)
-  } else {
     PubSub.publish('PLAYER_WINS', players[1].name)
+  } else {
+    PubSub.publish('PLAYER_WINS', players[0].name)
   }
 }
 
@@ -285,14 +285,14 @@ function setStartingPlayer(players) {
 
 async function takeTurns(players) {
   if (players[0].startingPlayer === true) {
-    PubSub.publish('PLAYER_GO', players[0].name)
+    //PubSub.publish('PLAYER_GO', players[0].name)
     await player1Fire(players[1])
-    PubSub.publish('COMPUTER_GO')
+    //PubSub.publish('COMPUTER_GO')
     await computerFire(players[0])
   } else {
-    PubSub.publish('COMPUTER_GO')
+    //PubSub.publish('COMPUTER_GO')
     await computerFire(players[0])
-    PubSub.publish('PLAYER_GO', players[0].name)
+    //PubSub.publish('PLAYER_GO', players[0].name)
     await player1Fire(players[1])
   }
 }
@@ -408,8 +408,8 @@ function clearAttackHighlights(board) {
 }
 
 async function computerFire(player) {
-  PubSub.publish('COMPUTER_GO')
-  await sleep(600)
+  //PubSub.publish('COMPUTER_GO')
+  //await sleep(speeds.veryFast)
   let timesHit = player.gameboard.hits.length
   while (timesHit === player.gameboard.hits.length) {
     if (player.gameboard.successfulHits.length === 0) {
@@ -417,7 +417,7 @@ async function computerFire(player) {
         const cell = randomCoord()
         player.gameboard.receiveAttack(cell)
         renderPlayerBoardReceiveAttacks(player)
-        await sleep(1000)
+        await sleep(speeds.medium)
       } catch (error) {
         console.error(error)
       }
@@ -427,7 +427,7 @@ async function computerFire(player) {
       try {
         player.gameboard.receiveAttack(cell)
         renderPlayerBoardReceiveAttacks(player)
-        await sleep(1000)
+        await sleep(speeds.veryFast)
       } catch (error) {
         console.error(error)
       }
@@ -436,14 +436,14 @@ async function computerFire(player) {
       try {
         player.gameboard.receiveAttack(cell)
         renderPlayerBoardReceiveAttacks(player)
-        await sleep(1000)
+        await sleep(speeds.veryFast)
       } catch (error) {
         console.error(error)
       }
     }
   }
   PubSub.publish('COMPUTER_ATTACKS', player.gameboard.hits.at(-1))
-  await sleep(1000)
+  //await sleep(speeds.fast)
 }
 
 function previousHitWasSuccessful(player) {
@@ -459,4 +459,14 @@ function randomCoord() {
   const x = Math.floor(Math.random() * 10)
   const y = Math.floor(Math.random() * 10)
   return [x, y]
+}
+
+const speeds = {
+  verySlow: 2000,
+  slow: 1500,
+  medium: 1000,
+  fast: 750,
+  veryFast: 500,
+  almostInstant: 250,
+  instant: 0,
 }
